@@ -66,27 +66,9 @@ public class AuthorsJpaController implements Serializable {
             em.getTransaction().begin();
             Authors persistentAuthors = em.find(Authors.class, authors.getIdA());
             List<Books> booksListOld = persistentAuthors.getBooksList();
-            List<Books> booksListNew = authors.getBooksList();
-            List<Books> attachedBooksListNew = new ArrayList<Books>();
-            for (Books booksListNewBooksToAttach : booksListNew) {
-                booksListNewBooksToAttach = em.getReference(booksListNewBooksToAttach.getClass(), booksListNewBooksToAttach.getIdB());
-                attachedBooksListNew.add(booksListNewBooksToAttach);
-            }
-            booksListNew = attachedBooksListNew;
-            authors.setBooksList(booksListNew);
+            
+            authors.setBooksList(booksListOld);
             authors = em.merge(authors);
-            for (Books booksListOldBooks : booksListOld) {
-                if (!booksListNew.contains(booksListOldBooks)) {
-                    booksListOldBooks.getAuthorsList().remove(authors);
-                    booksListOldBooks = em.merge(booksListOldBooks);
-                }
-            }
-            for (Books booksListNewBooks : booksListNew) {
-                if (!booksListOld.contains(booksListNewBooks)) {
-                    booksListNewBooks.getAuthorsList().add(authors);
-                    booksListNewBooks = em.merge(booksListNewBooks);
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
