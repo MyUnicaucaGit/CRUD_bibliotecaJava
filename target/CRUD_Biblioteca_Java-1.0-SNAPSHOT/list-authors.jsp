@@ -61,8 +61,8 @@
                         <c:out value="${author.country}" />
                         </td>
 
-                        <td><a href="edit?id=<c:out value='${author.idA}' />">Editar</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="delete?id=<c:out value='${author.idA}' />">Eliminar</a></td>
+                        <td><a href="edit?idA=<c:out value='${author.idA}' />">Editar</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="delete?idA=<c:out value='${author.idA}' />">Eliminar</a></td>
                         </tr>
                     </c:forEach>
                     <!-- } -->

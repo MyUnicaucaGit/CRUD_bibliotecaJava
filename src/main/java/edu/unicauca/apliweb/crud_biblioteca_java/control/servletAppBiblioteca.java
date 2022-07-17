@@ -59,16 +59,16 @@ public class servletAppBiblioteca extends HttpServlet {
                     showNewForm(request, response);
                     break;
                 case "/insert": //ejecuta la creación de un nuevo cliente en la BD 
-                    insertClient(request, response);
+                    insertAuthor(request, response);
                     break;
                 case "/delete": //Ejecuta la eliminación de un cliente de la BD
-                    deleteClient(request, response);
+                    deleteAuthor(request, response);
                     break;
                 case "/edit": //Muestra el formulario para editar un cliente
                     showEditForm(request, response);
                     break;
                 case "/update": //Ejecuta la edición de un cliente de la BD
-                    updateClient(request, response);
+                    updateAuthor(request, response);
                     break;
                 default:
                     listAuthors(request, response);
@@ -93,7 +93,7 @@ public class servletAppBiblioteca extends HttpServlet {
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("client-form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("author-form.jsp");
 
         dispatcher.forward(request, response);
     }
@@ -101,14 +101,14 @@ public class servletAppBiblioteca extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
 //toma el id del cliente a ser editaro
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("idA"));
 //busca al cliente en la base de datos
         Authors existingClient = authorsJPA.findAuthors(id);
         RequestDispatcher dispatcher = null;
         if (existingClient != null) {
 //si lo encuentra lo envía al formulario
-            dispatcher = request.getRequestDispatcher("client-form.jsp");
-            request.setAttribute("cliente", existingClient);
+            dispatcher = request.getRequestDispatcher("author-form.jsp");
+            request.setAttribute("author", existingClient);
         } else {
 //si no lo encuentra regresa a la página con la lista de los clientes 
             dispatcher = request.getRequestDispatcher("list-authors.jsp");
@@ -117,15 +117,14 @@ public class servletAppBiblioteca extends HttpServlet {
     }
 //método para crear un cliente en la base de datos
 
-    private void insertClient(HttpServletRequest request, HttpServletResponse response)
+    private void insertAuthor(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
 //toma los datos del formulario de clientes
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
+        String name = request.getParameter("name");        
         String country = request.getParameter("country");
 //crea un objeto de tipo Clients vacío y lo llena con los datos obtenidos 
         Authors aut = new Authors();
-        aut.setName(name);       
+        aut.setName(name);
         aut.setCountry(country);
 //Crea el cliente utilizando el objeto controlador JPA
         authorsJPA.create(aut);
@@ -134,17 +133,16 @@ public class servletAppBiblioteca extends HttpServlet {
     }
 //Método para editar un cliente
 
-    private void updateClient(HttpServletRequest request, HttpServletResponse response)
+    private void updateAuthor(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-//toma los datos enviados por el formulario de clientes
-        int id_author = Integer.parseInt(request.getParameter("id"));
+//toma los datos enviados por el formulario de autores
+        int id_author = Integer.parseInt(request.getParameter("idA"));
         String name = request.getParameter("name");
-        String email = request.getParameter("email");
         String country = request.getParameter("country");
 //crea un objeto vacío y lo llena con los datos del cliente
         Authors aut = new Authors();
         aut.setIdA(id_author);
-        aut.setName(name);        
+        aut.setName(name);
         aut.setCountry(country);
         try {
 //Edita el cliente en la BD
@@ -156,10 +154,10 @@ public class servletAppBiblioteca extends HttpServlet {
     }
 //Elimina un cliente de la BD
 
-    private void deleteClient(HttpServletRequest request, HttpServletResponse response)
+    private void deleteAuthor(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
 //Recibe el ID del cliente que se espera eliminar de la BD
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("idA"));
         try {
 //Elimina el cliente con el id indicado
             authorsJPA.destroy(id);
