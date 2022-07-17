@@ -70,8 +70,11 @@ public class servletAppBiblioteca extends HttpServlet {
                 case "/update": //Ejecuta la edición de un cliente de la BD
                     updateClient(request, response);
                     break;
-                default:
+                case "/authors": //Ejecuta la edición de un cliente de la BD
                     listAuthors(request, response);
+                    break;
+                default:
+                    inicio(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -85,6 +88,13 @@ public class servletAppBiblioteca extends HttpServlet {
         request.setAttribute("listAuthors", listAuthors);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-authors.jsp");
+
+        dispatcher.forward(request, response);
+    }
+    private void inicio(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("inicio.jsp");
 
         dispatcher.forward(request, response);
     }
