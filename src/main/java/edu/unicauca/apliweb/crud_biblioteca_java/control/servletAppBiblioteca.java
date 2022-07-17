@@ -139,7 +139,7 @@ public class servletAppBiblioteca extends HttpServlet {
 //Crea el cliente utilizando el objeto controlador JPA
         authorsJPA.create(aut);
 //solicita al Servlet que muestre la página actualizada con la lista de
-        response.sendRedirect("list");
+        response.sendRedirect("authors");
     }
 //Método para editar un cliente
 
@@ -160,7 +160,7 @@ public class servletAppBiblioteca extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("list");
+        response.sendRedirect("authors");
     }
 //Elimina un cliente de la BD
 
@@ -174,7 +174,7 @@ public class servletAppBiblioteca extends HttpServlet {
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
         }
-        response.sendRedirect("list");
+        response.sendRedirect("authors");
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

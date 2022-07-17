@@ -48,7 +48,9 @@
                             </caption>
 
                             <c:if test="${author != null}">
-                                <input type="hidden" name="idA" value="<c:out value='${author.idA}' />" />
+                                <fieldset class="form-group">
+                                    <input type="number" hidden name="idA" value="<c:out value='${author.idA}' />" />
+                                </fieldset>         
                             </c:if>
                             <fieldset class="form-group">
                                 <label>Nombre</label> <input type="text" value="<c:out value='${author.name}' />"
