@@ -17,10 +17,10 @@
         <header>
             <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
                 <div>
-                    <a href="https://www.unicauca.edu.co" class="navbar-brand"> Aplicación Ejemplo Apliweb </a>
+                    <a href="<%=request.getContextPath()%>" class="navbar-brand"> Aplicación Biblioteca </a>
                 </div>
                 <ul class="navbar-nav">
-                    <li><a href="<%=request.getContextPath()%>/list" class="nav-link">LIsta Clientss</a></li>
+                    <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Lista Clientss</a></li>
                 </ul>
             </nav>
         </header>
