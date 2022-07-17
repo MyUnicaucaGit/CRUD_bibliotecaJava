@@ -9,12 +9,18 @@ import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.AuthorsJpaContr
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.BooksJpaController;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.UserbooksJpaController;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.UsersJpaController;
+import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.exceptions.NonexistentEntityException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author User
  */
+@WebServlet("/")
 public class servletAppBiblioteca extends HttpServlet {
 
     private BooksJpaController booksJPA;
@@ -44,21 +51,125 @@ public class servletAppBiblioteca extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletAppBiblioteca</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet servletAppBiblioteca at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String action = request.getServletPath();
+
+        try {
+            switch (action) {
+                case "/new": //Muestra el formulario para crear un nuevo cliente
+                    showNewForm(request, response);
+                    break;
+                case "/insert": //ejecuta la creación de un nuevo cliente en la BD 
+                    insertClient(request, response);
+                    break;
+                case "/delete": //Ejecuta la eliminación de un cliente de la BD
+                    deleteClient(request, response);
+                    break;
+                case "/edit": //Muestra el formulario para editar un cliente
+                    showEditForm(request, response);
+                    break;
+                case "/update": //Ejecuta la edición de un cliente de la BD
+                    updateClient(request, response);
+                    break;
+                default:
+                    listAuthors(request, response);
+                    break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    private void listAuthors(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List< Authors> listaClients = authorsJPA.findAuthorsEntities();
+        request.setAttribute("listClients", listaClients);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("list-authors.jsp");
+
+        dispatcher.forward(request, response);
+    }
+
+    //muestra el formulario para crear un nuevo usuario
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("client-form.jsp");
+
+        dispatcher.forward(request, response);
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+//toma el id del cliente a ser editaro
+        int id = Integer.parseInt(request.getParameter("id"));
+//busca al cliente en la base de datos
+        Authors existingClient = authorsJPA.findAuthors(id);
+        RequestDispatcher dispatcher = null;
+        if (existingClient != null) {
+//si lo encuentra lo envía al formulario
+            dispatcher = request.getRequestDispatcher("client-form.jsp");
+            request.setAttribute("cliente", existingClient);
+        } else {
+//si no lo encuentra regresa a la página con la lista de los clientes 
+            dispatcher = request.getRequestDispatcher("list-authors.jsp");
+        }
+        dispatcher.forward(request, response);
+    }
+//método para crear un cliente en la base de datos
+
+    private void insertClient(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+//toma los datos del formulario de clientes
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+//crea un objeto de tipo Clients vacío y lo llena con los datos obtenidos 
+        Authors aut = new Authors();
+        aut.setName(name);       
+        aut.setCountry(country);
+//Crea el cliente utilizando el objeto controlador JPA
+        authorsJPA.create(aut);
+//solicita al Servlet que muestre la página actualizada con la lista de
+        response.sendRedirect("list");
+    }
+//Método para editar un cliente
+
+    private void updateClient(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+//toma los datos enviados por el formulario de clientes
+        int id_author = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+//crea un objeto vacío y lo llena con los datos del cliente
+        Authors aut = new Authors();
+        aut.setIdA(id_author);
+        aut.setName(name);        
+        aut.setCountry(country);
+        try {
+//Edita el cliente en la BD
+            authorsJPA.edit(aut);
+        } catch (Exception ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("list");
+    }
+//Elimina un cliente de la BD
+
+    private void deleteClient(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+//Recibe el ID del cliente que se espera eliminar de la BD
+        int id = Integer.parseInt(request.getParameter("id"));
+        try {
+//Elimina el cliente con el id indicado
+            authorsJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("list");
+    }
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -100,20 +211,14 @@ public class servletAppBiblioteca extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-//creamos una instancia de la clase EntityManagerFactory
-//esta clase se encarga de gestionar la construcción de entidades y
-//permite a los controladores JPA ejecutar las operaciones CRUD
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU);
-//creamos una instancia del controldor JPA para la clase clients y le
-//pasamos el gestor de entidades
+
         authorsJPA = new AuthorsJpaController(emf);
-//esta parte es solamente para realizar la prueba:
-//listamos todos los clientes de la base de datos y los imprimimos en consola 
-List<Authors> listaAutores = authorsJPA.findAuthorsEntities();
-//imprimimos los clientes en consola
-        for (Authors autor : listaAutores) {
-            System.out.println("Nombre " + autor.getName() + " pais " + autor.getCountry());
-        }
+        usersJPA = new UsersJpaController(emf);
+        booksJPA = new BooksJpaController(emf);
+        userbooksJPA = new UserbooksJpaController(emf);
+
     }
 
 }
