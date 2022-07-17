@@ -81,8 +81,8 @@ public class servletAppBiblioteca extends HttpServlet {
 
     private void listAuthors(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List< Authors> listaClients = authorsJPA.findAuthorsEntities();
-        request.setAttribute("listClients", listaClients);
+        List< Authors> listAuthors = authorsJPA.findAuthorsEntities();
+        request.setAttribute("listAuthors", listAuthors);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-authors.jsp");
 

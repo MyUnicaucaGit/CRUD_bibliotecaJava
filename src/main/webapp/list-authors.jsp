@@ -49,7 +49,7 @@
                     <c:forEach var="author" items="${listAuthors}">
                         <tr>
                             <td>
-                        <c:out value="${author.id}" />
+                        <c:out value="${author.idA}" />
                         </td>
                         <td>
 
@@ -61,8 +61,8 @@
                         <c:out value="${author.country}" />
                         </td>
 
-                        <td><a href="edit?id=<c:out value='${author.id}' />">Editar</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="delete?id=<c:out value='${author.id}' />">Eliminar</a></td>
+                        <td><a href="edit?id=<c:out value='${author.idA}' />">Editar</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="delete?id=<c:out value='${author.idA}' />">Eliminar</a></td>
                         </tr>
                     </c:forEach>
                     <!-- } -->
