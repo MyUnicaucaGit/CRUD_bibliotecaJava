@@ -14,13 +14,19 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <header>
-            <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
+       <header>
+            <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #188494 ">
                 <div>
                     <a href="<%=request.getContextPath()%>" class="navbar-brand"> Aplicación Biblioteca </a>
                 </div>
                 <ul class="navbar-nav">
-                    <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Lista Clientss</a></li>
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/authors" class="nav-link">Gestion Autores</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/books" class="nav-link">Gestion Libros</a></li>
+                </ul>
+                  <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/users" class="nav-link">Gestion Usuarios</a></li>
                 </ul>
             </nav>
         </header>
@@ -28,10 +34,10 @@
         <div class="row">
             <!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
             <div class="container">
-                <h3 class="text-center">Lista de Clientes</h3>
+                <h3 class="text-center">Lista de Autores</h3>
                 <hr>
                 <div class="container text-left">
-                    <a href="<%=request.getContextPath()%>/new" class="btn btn-success">Nuevo Cliente</a>
+                    <a href="<%=request.getContextPath()%>/newAuthor" class="btn btn-outline-info btn-block">Nuevo Autor</a>
                 </div>
                 <br>
                 <table class="table table-bordered">
@@ -61,8 +67,8 @@
                         <c:out value="${author.country}" />
                         </td>
 
-                        <td><a href="edit?idA=<c:out value='${author.idA}' />">Editar</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="delete?idA=<c:out value='${author.idA}' />">Eliminar</a></td>
+                        <td><a href="editAuthor?idA=<c:out value='${author.idA}' />">Editar</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="deleteAuthor?idA=<c:out value='${author.idA}' />">Eliminar</a></td>
                         </tr>
                     </c:forEach>
                     <!-- } -->

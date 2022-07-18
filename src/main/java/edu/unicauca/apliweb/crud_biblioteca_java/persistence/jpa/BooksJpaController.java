@@ -86,60 +86,12 @@ public class BooksJpaController implements Serializable {
             em.getTransaction().begin();
             Books persistentBooks = em.find(Books.class, books.getIdB());
             List<Authors> authorsListOld = persistentBooks.getAuthorsList();
-            List<Authors> authorsListNew = books.getAuthorsList();
             List<Userbooks> userbooksListOld = persistentBooks.getUserbooksList();
-            List<Userbooks> userbooksListNew = books.getUserbooksList();
-            List<String> illegalOrphanMessages = null;
-            for (Userbooks userbooksListOldUserbooks : userbooksListOld) {
-                if (!userbooksListNew.contains(userbooksListOldUserbooks)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Userbooks " + userbooksListOldUserbooks + " since its books field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            List<Authors> attachedAuthorsListNew = new ArrayList<Authors>();
-            for (Authors authorsListNewAuthorsToAttach : authorsListNew) {
-                authorsListNewAuthorsToAttach = em.getReference(authorsListNewAuthorsToAttach.getClass(), authorsListNewAuthorsToAttach.getIdA());
-                attachedAuthorsListNew.add(authorsListNewAuthorsToAttach);
-            }
-            authorsListNew = attachedAuthorsListNew;
-            books.setAuthorsList(authorsListNew);
-            List<Userbooks> attachedUserbooksListNew = new ArrayList<Userbooks>();
-            for (Userbooks userbooksListNewUserbooksToAttach : userbooksListNew) {
-                userbooksListNewUserbooksToAttach = em.getReference(userbooksListNewUserbooksToAttach.getClass(), userbooksListNewUserbooksToAttach.getUserbooksPK());
-                attachedUserbooksListNew.add(userbooksListNewUserbooksToAttach);
-            }
-            userbooksListNew = attachedUserbooksListNew;
-            books.setUserbooksList(userbooksListNew);
+            books.setAuthorsList(authorsListOld);
+            books.setUserbooksList(userbooksListOld);
             books = em.merge(books);
-            for (Authors authorsListOldAuthors : authorsListOld) {
-                if (!authorsListNew.contains(authorsListOldAuthors)) {
-                    authorsListOldAuthors.getBooksList().remove(books);
-                    authorsListOldAuthors = em.merge(authorsListOldAuthors);
-                }
-            }
-            for (Authors authorsListNewAuthors : authorsListNew) {
-                if (!authorsListOld.contains(authorsListNewAuthors)) {
-                    authorsListNewAuthors.getBooksList().add(books);
-                    authorsListNewAuthors = em.merge(authorsListNewAuthors);
-                }
-            }
-            for (Userbooks userbooksListNewUserbooks : userbooksListNew) {
-                if (!userbooksListOld.contains(userbooksListNewUserbooks)) {
-                    Books oldBooksOfUserbooksListNewUserbooks = userbooksListNewUserbooks.getBooks();
-                    userbooksListNewUserbooks.setBooks(books);
-                    userbooksListNewUserbooks = em.merge(userbooksListNewUserbooks);
-                    if (oldBooksOfUserbooksListNewUserbooks != null && !oldBooksOfUserbooksListNewUserbooks.equals(books)) {
-                        oldBooksOfUserbooksListNewUserbooks.getUserbooksList().remove(userbooksListNewUserbooks);
-                        oldBooksOfUserbooksListNewUserbooks = em.merge(oldBooksOfUserbooksListNewUserbooks);
-                    }
-                }
-            }
             em.getTransaction().commit();
+            
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {

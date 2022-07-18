@@ -11,6 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.Books;
+import edu.unicauca.apliweb.crud_biblioteca_java.persistence.Users;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,7 @@ public class AuthorsJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Authors persistentAuthors = em.find(Authors.class, authors.getIdA());
-            List<Books> booksListOld = persistentAuthors.getBooksList();
-            
+            List<Books> booksListOld = persistentAuthors.getBooksList();            
             authors.setBooksList(booksListOld);
             authors = em.merge(authors);
             em.getTransaction().commit();
@@ -156,6 +156,10 @@ public class AuthorsJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+
+    public void create(Users us) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

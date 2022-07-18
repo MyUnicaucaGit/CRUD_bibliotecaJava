@@ -72,38 +72,9 @@ public class UsersJpaController implements Serializable {
             em.getTransaction().begin();
             Users persistentUsers = em.find(Users.class, users.getIdU());
             List<Userbooks> userbooksListOld = persistentUsers.getUserbooksList();
-            List<Userbooks> userbooksListNew = users.getUserbooksList();
-            List<String> illegalOrphanMessages = null;
-            for (Userbooks userbooksListOldUserbooks : userbooksListOld) {
-                if (!userbooksListNew.contains(userbooksListOldUserbooks)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Userbooks " + userbooksListOldUserbooks + " since its users field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            List<Userbooks> attachedUserbooksListNew = new ArrayList<Userbooks>();
-            for (Userbooks userbooksListNewUserbooksToAttach : userbooksListNew) {
-                userbooksListNewUserbooksToAttach = em.getReference(userbooksListNewUserbooksToAttach.getClass(), userbooksListNewUserbooksToAttach.getUserbooksPK());
-                attachedUserbooksListNew.add(userbooksListNewUserbooksToAttach);
-            }
-            userbooksListNew = attachedUserbooksListNew;
-            users.setUserbooksList(userbooksListNew);
-            users = em.merge(users);
-            for (Userbooks userbooksListNewUserbooks : userbooksListNew) {
-                if (!userbooksListOld.contains(userbooksListNewUserbooks)) {
-                    Users oldUsersOfUserbooksListNewUserbooks = userbooksListNewUserbooks.getUsers();
-                    userbooksListNewUserbooks.setUsers(users);
-                    userbooksListNewUserbooks = em.merge(userbooksListNewUserbooks);
-                    if (oldUsersOfUserbooksListNewUserbooks != null && !oldUsersOfUserbooksListNewUserbooks.equals(users)) {
-                        oldUsersOfUserbooksListNewUserbooks.getUserbooksList().remove(userbooksListNewUserbooks);
-                        oldUsersOfUserbooksListNewUserbooks = em.merge(oldUsersOfUserbooksListNewUserbooks);
-                    }
-                }
-            }
+           
+           users.setUserbooksList(userbooksListOld);
+           users = em.merge(users);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();

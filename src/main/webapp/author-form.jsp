@@ -9,18 +9,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
-        <title>Formulario Autor</title>
+        <title>Formulario Autores</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
+           <<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #188494 ">
                 <div>
-                    <a href="https://www.unicauca.edu.co" class="navbar-brand"> Aplicación Ejemplo Apliweb </a>
+                    <a href="<%=request.getContextPath()%>" class="navbar-brand"> Aplicación Biblioteca </a>
                 </div>
                 <ul class="navbar-nav">
-                    <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Lista Autores</a></li>
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/authors" class="nav-link">Gestion Autores</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/books" class="nav-link">Gestion Libros</a></li>
+                </ul>
+                  <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/users" class="nav-link">Gestion Usuarios</a></li>
                 </ul>
             </nav>
         </header>
@@ -29,11 +35,11 @@
             <div class="card">
                 <div class="card-body">
                     <c:if test="${author != null}">
-                        <form action="update" method="post">
+                        <form action="updateAuthor" method="post">
                         </c:if>
 
                         <c:if test="${author == null}">
-                            <form action="insert" method="post">
+                            <form action="insertAuthor" method="post">
                             </c:if>
                             <caption>
                                 <h2>
@@ -60,7 +66,7 @@
                                 <label>País</label> <input type="text" value="<c:out value='${author.country}'
                                        />" class="form-control" name="country">
                             </fieldset>
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="submit" class="btn btn-success btn-block">Guardar</button>
                         </form>
                 </div>
             </div>

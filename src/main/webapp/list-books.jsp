@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
     <head>
-        <title>Lista de Autores</title>
+        <title>Lista de Libros</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
@@ -34,41 +34,35 @@
         <div class="row">
             <!-- <div class="alert alert-success" *ngIf='message'>{{message}}</div> -->
             <div class="container">
-                <h3 class="text-center">Lista de Autores</h3>
+                <h3 class="text-center">Lista de Libros</h3>
                 <hr>
                 <div class="container text-left">
-                    <a href="<%=request.getContextPath()%>/newAuthor" class="btn btn-outline-info btn-block">Nuevo Autor</a>
+                    <a href="<%=request.getContextPath()%>/newBook" class="btn btn-outline-info btn-block">Nuevo Libro</a>
                 </div>
                 <br>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>                            
-                            <th>País</th>
-                            <th>Acciones</th>
+                            <th>Titulo</th>                                                                    
                         </tr>
                     </thead>
                     <tbody>
 
                         <!-- for (Todo todo: todos) { -->
-                    <c:forEach var="author" items="${listAuthors}">
+                    <c:forEach var="book" items="${listBooks}">
                         <tr>
                             <td>
-                        <c:out value="${author.idA}" />
+                        <c:out value="${book.idB}" />
                         </td>
                         <td>
 
-                        <c:out value="${author.name}" />
+                        <c:out value="${book.title}" />
                         </td>
-                        
-                        <td>
+                                            
 
-                        <c:out value="${author.country}" />
-                        </td>
-
-                        <td><a href="editAuthor?idA=<c:out value='${author.idA}' />">Editar</a>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="deleteAuthor?idA=<c:out value='${author.idA}' />">Eliminar</a></td>
+                        <td><a href="editBook?idB=<c:out value='${book.idB}' />">Editar</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <a href="deleteBook?idB=<c:out value='${book.idB}' />">Eliminar</a></td>
                         </tr>
                     </c:forEach>
                     <!-- } -->
