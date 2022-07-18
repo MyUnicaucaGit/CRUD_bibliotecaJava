@@ -15,7 +15,7 @@
     </head>
     <body>
         <header>
-            <<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #188494 ">
+            <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #188494 ">
                 <div>
                     <a href="<%=request.getContextPath()%>" class="navbar-brand"> Aplicación Biblioteca </a>
                 </div>
@@ -25,8 +25,12 @@
                 <ul class="navbar-nav">
                     <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/books" class="nav-link">Gestion Libros</a></li>
                 </ul>
-                  <ul class="navbar-nav">
+                <ul class="navbar-nav">
                     <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/users" class="nav-link">Gestion Usuarios</a></li>
+                </ul>
+                </ul>
+                <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/Loans" class="nav-link">Gestion Prestamos</a></li>
                 </ul>
             </nav>
         </header>
@@ -61,7 +65,16 @@
                             <fieldset class="form-group">
                                 <label>Titulo</label> <input type="text" value="<c:out value='${book.title}' />"
                                                              class="form-control" name="title" required="required">
-                            </fieldset>                                                        
+                            </fieldset>
+                            <c:if test="${book == null}">
+                                <fieldset class="form-group">
+                                    <select class="form-control selectpicker" name="BookAuthor" >
+                                        <c:forEach var="author" items="${listAuthors}">
+                                            <option VALUE=${author.idA} >${author.name}                                   
+                                            </c:forEach>
+                                    </select>   
+                                </fieldset>
+                            </c:if>
                             <button type="submit" class="btn btn-success btn-block">Guardar</button>
                         </form>
                 </div>

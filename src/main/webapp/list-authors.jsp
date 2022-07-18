@@ -25,8 +25,12 @@
                 <ul class="navbar-nav">
                     <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/books" class="nav-link">Gestion Libros</a></li>
                 </ul>
-                  <ul class="navbar-nav">
+                <ul class="navbar-nav">
                     <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/users" class="nav-link">Gestion Usuarios</a></li>
+                </ul>
+                </ul>
+                <ul class="navbar-nav">
+                    <li><a href="http://localhost:8080/CRUD_Biblioteca_Java/Loans" class="nav-link">Gestion Prestamos</a></li>
                 </ul>
             </nav>
         </header>
