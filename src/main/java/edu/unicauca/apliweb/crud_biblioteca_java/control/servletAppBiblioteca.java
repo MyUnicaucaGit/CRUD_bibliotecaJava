@@ -40,12 +40,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/")
 public class servletAppBiblioteca extends HttpServlet {
-    
+
     private BooksJpaController booksJPA;
     private AuthorsJpaController authorsJPA;
     private UserbooksJpaController userbooksJPA;
     private UsersJpaController usersJPA;
-    
+
     private final static String PU = "persistenceBiblioteca";
 
     /**
@@ -61,7 +61,7 @@ public class servletAppBiblioteca extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getServletPath();
-        
+
         try {
             switch (action) {
                 case "/authors": //Ir a la lista de autores
@@ -82,7 +82,7 @@ public class servletAppBiblioteca extends HttpServlet {
                 case "/updateAuthor": //Ejecuta la edición de un autor de la BD
                     updateAuthor(request, response);
                     break;
-                
+
                 case "/books": //Ir a la lista de libros
                     listBooks(request, response);
                     break;
@@ -101,7 +101,7 @@ public class servletAppBiblioteca extends HttpServlet {
                 case "/updateBook": //Ejecuta la edición de un libro de la BD
                     updateBook(request, response);
                     break;
-                
+
                 case "/users": //Ir a la lista de usuarios
                     listUsers(request, response);
                     break;
@@ -129,7 +129,7 @@ public class servletAppBiblioteca extends HttpServlet {
                 case "/insertLoan": //Ir a la lista de usuarios
                     insertLoan(request, response);
                     break;
-                
+
                 default:
                     inicio(request, response);
                     break;
@@ -138,34 +138,34 @@ public class servletAppBiblioteca extends HttpServlet {
             throw new ServletException(ex);
         }
     }
-    
+
     private void inicio(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("inicio.jsp");
-        
+
         dispatcher.forward(request, response);
     }
-    
+
     private void listAuthors(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List< Authors> listAuthors = authorsJPA.findAuthorsEntities();
         request.setAttribute("listAuthors", listAuthors);
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-authors.jsp");
-        
+
         dispatcher.forward(request, response);
     }
 
     //muestra el formulario para crear un nuevo autor
     private void showNewFormAuthors(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("author-form.jsp");
-        
+
         dispatcher.forward(request, response);
     }
-    
+
     private void showEditFormAuthors(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         //toma el id del autor a ser editaro
@@ -197,7 +197,14 @@ public class servletAppBiblioteca extends HttpServlet {
         //Crea el autor utilizando el objeto controlador JPA
         authorsJPA.create(aut);
         //solicita al Servlet que muestre la página actualizada con la lista de autores
-        response.sendRedirect("authors");
+
+        request.setAttribute("success", true);
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("authors").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Método para editar un autor
@@ -215,10 +222,19 @@ public class servletAppBiblioteca extends HttpServlet {
         try {
             //Edita el autor en la BD
             authorsJPA.edit(aut);
+
+            request.setAttribute("success", true);
         } catch (Exception ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("authors");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("authors").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Elimina un autor de la BD
@@ -229,33 +245,42 @@ public class servletAppBiblioteca extends HttpServlet {
         try {
             //Elimina el autor con el id indicado
             authorsJPA.destroy(id);
+
+            request.setAttribute("success", true);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("authors");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("authors").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     private void listBooks(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List< Books> listBooks = booksJPA.findBooksEntities();
         request.setAttribute("listBooks", listBooks);
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-books.jsp");
-        
+
         dispatcher.forward(request, response);
     }
 
     //muestra el formulario para crear un nuevo libro
     private void showNewFormBooks(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         List<Authors> listAuthors = authorsJPA.findAuthorsEntities();
         request.setAttribute("listAuthors", listAuthors);
         RequestDispatcher dispatcher = request.getRequestDispatcher("book-form.jsp");
-        
+
         dispatcher.forward(request, response);
     }
-    
+
     private void showEditFormBooks(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         //toma el id del libro a ser editaro
@@ -279,7 +304,7 @@ public class servletAppBiblioteca extends HttpServlet {
             throws SQLException, IOException {
         //toma los datos del formulario de libros
         String title = request.getParameter("title");
-        
+
         int idA = Integer.parseInt(request.getParameter("BookAuthor"));
         Authors aut = authorsJPA.findAuthors(idA);
         List<Authors> autList = new ArrayList();
@@ -293,9 +318,16 @@ public class servletAppBiblioteca extends HttpServlet {
         //Crea el libro utilizando el objeto controlador JPA
         booksJPA.create(book);
         //solicita al Servlet que muestre la página actualizada con la lista de libros
-        response.sendRedirect("books");
+
+        request.setAttribute("success", true);
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("books").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     private void updateBook(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         //toma los datos enviados por el formulario de libros
@@ -306,14 +338,23 @@ public class servletAppBiblioteca extends HttpServlet {
         Books book = new Books();
         book.setIdB(id_book);
         book.setTitle(title);
-        
+
         try {
             //Edita el libro en la BD
             booksJPA.edit(book);
+
+            request.setAttribute("success", true);
         } catch (Exception ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("books");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("books").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Elimina un libro de la BD
@@ -323,33 +364,44 @@ public class servletAppBiblioteca extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("idB"));
         try {
             booksJPA.destroy(id);
+
+            request.setAttribute("success", true);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         } catch (IllegalOrphanException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("books");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("books").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List< Users> listUsers = usersJPA.findUsersEntities();
         request.setAttribute("listUsers", listUsers);
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-users.jsp");
-        
+
         dispatcher.forward(request, response);
     }
 
     //muestra el formulario para crear un nuevo usuario
     private void showNewFormUsers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
-        
+
         dispatcher.forward(request, response);
     }
-    
+
     private void showEditFormUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         //toma el id del usuario a ser editaro
@@ -381,7 +433,14 @@ public class servletAppBiblioteca extends HttpServlet {
         //Crea el autor utilizando el objeto controlador JPA
         usersJPA.create(us);
         //solicita al Servlet que muestre la página actualizada con la lista de autores
-        response.sendRedirect("users");
+
+        request.setAttribute("success", true);
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("users").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Método para editar un usuario
@@ -399,10 +458,19 @@ public class servletAppBiblioteca extends HttpServlet {
         try {
             //Edita el autor en la BD
             usersJPA.edit(us);
+
+            request.setAttribute("success", true);
         } catch (Exception ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("users");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("users").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     //Elimina un autor de la BD
@@ -413,34 +481,45 @@ public class servletAppBiblioteca extends HttpServlet {
         try {
             //Elimina el autor con el id indicado
             usersJPA.destroy(id);
+
+            request.setAttribute("success", true);
         } catch (NonexistentEntityException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         } catch (IllegalOrphanException ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        response.sendRedirect("users");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("users").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     private void listLoans(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List< Userbooks> loans = userbooksJPA.findUserbooksEntities();
         request.setAttribute("loans", loans);
-        
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("list-loans.jsp");
-        
+
         dispatcher.forward(request, response);
     }
 
     //muestra el formulario para crear un nuevo usuario
     private void showNewFormLoans(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         List<Users> listUsers = usersJPA.findUsersEntities();
         request.setAttribute("listUsers", listUsers);
         List<Books> listBooks = booksJPA.findBooksEntities();
         request.setAttribute("listBooks", listBooks);
         RequestDispatcher dispatcher = request.getRequestDispatcher("loan-form.jsp");
-        
+
         dispatcher.forward(request, response);
     }
 
@@ -458,17 +537,26 @@ public class servletAppBiblioteca extends HttpServlet {
         usB.setUsers(u);
         usB.setBooks(b);
         Date time = new Date();
-        time.setMonth(time.getMonth()+1);
+        time.setMonth(time.getMonth() + 1);
         usB.setExDate(time);
         try {
             //usB.setBooks(title);
             //Crea el autor utilizando el objeto controlador JPA
             userbooksJPA.create(usB);
+
+            request.setAttribute("success", true);
         } catch (Exception ex) {
             Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+
+            request.setAttribute("success", false);
         }
-        //solicita al Servlet que muestre la página actualizada con la lista de autores
-        response.sendRedirect("Loans");
+        try {
+            //solicita al Servlet que muestre la página actualizada con la lista de autores
+            request.getRequestDispatcher("Loans").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -513,14 +601,14 @@ public class servletAppBiblioteca extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(PU);
-        
+
         authorsJPA = new AuthorsJpaController(emf);
         usersJPA = new UsersJpaController(emf);
         booksJPA = new BooksJpaController(emf);
         userbooksJPA = new UserbooksJpaController(emf);
-        
+
     }
-    
+
 }
