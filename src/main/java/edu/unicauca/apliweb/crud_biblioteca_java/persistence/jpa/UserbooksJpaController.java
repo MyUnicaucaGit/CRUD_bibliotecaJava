@@ -15,6 +15,7 @@ import edu.unicauca.apliweb.crud_biblioteca_java.persistence.Userbooks;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.UserbooksPK;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.exceptions.NonexistentEntityException;
 import edu.unicauca.apliweb.crud_biblioteca_java.persistence.jpa.exceptions.PreexistingEntityException;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,6 +41,7 @@ public class UserbooksJpaController implements Serializable {
         }
         userbooks.getUserbooksPK().setUserId(userbooks.getUsers().getIdU());
         userbooks.getUserbooksPK().setBookId(userbooks.getBooks().getIdB());
+        userbooks.getUserbooksPK().setLoanDate(new Date());
         EntityManager em = null;
         try {
             em = getEntityManager();

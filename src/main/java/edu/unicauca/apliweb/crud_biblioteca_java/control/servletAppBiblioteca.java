@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -278,13 +279,16 @@ public class servletAppBiblioteca extends HttpServlet {
             throws SQLException, IOException {
         //toma los datos del formulario de libros
         String title = request.getParameter("title");
-        List<Authors> aut;
+        
         int idA = Integer.parseInt(request.getParameter("BookAuthor"));
-        aut.add(authorsJPA.findAuthors(idA));
+        Authors aut = authorsJPA.findAuthors(idA);
+        List<Authors> autList = new ArrayList();
+        autList.add(aut);
+        //aut.add(authorsJPA.findAuthors(idA));
         //crea un objeto de tipo Books vacío y lo llena con los datos obtenidos 
         Books book = new Books();
         book.setTitle(title);
-        book.setAuthorsList(aut);
+        book.setAuthorsList(autList);
 
         //Crea el libro utilizando el objeto controlador JPA
         booksJPA.create(book);
@@ -444,18 +448,27 @@ public class servletAppBiblioteca extends HttpServlet {
     private void insertLoan(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         //toma los datos del formulario de autores
-        String email = request.getParameter("email");
-        String title = request.getParameter("title");
-        int time = Integer.parseInt(request.getParameter("time"));
+        int idU = Integer.parseInt(request.getParameter("user_id"));
+        int idB = Integer.parseInt(request.getParameter("book_id"));
+        Users u = usersJPA.findUsers(idU);
+        Books b = booksJPA.findBooks(idB);
 
         //crea un objeto de tipo Authors vacío y lo llena con los datos obtenidos 
         Userbooks usB = new Userbooks();
-        usB.setUsers(email);
-        usB.setBooks(title);
-        //Crea el autor utilizando el objeto controlador JPA
-        userbooksJPA.create(usB);
+        usB.setUsers(u);
+        usB.setBooks(b);
+        Date time = new Date();
+        time.setMonth(time.getMonth()+1);
+        usB.setExDate(time);
+        try {
+            //usB.setBooks(title);
+            //Crea el autor utilizando el objeto controlador JPA
+            userbooksJPA.create(usB);
+        } catch (Exception ex) {
+            Logger.getLogger(servletAppBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //solicita al Servlet que muestre la página actualizada con la lista de autores
-        response.sendRedirect("users");
+        response.sendRedirect("Loans");
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

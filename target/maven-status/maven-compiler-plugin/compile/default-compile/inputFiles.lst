@@ -1,13 +1,13 @@
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Userbooks.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Authors.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\control\servletAppBiblioteca.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\NonexistentEntityException.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\UsersJpaController.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\BooksJpaController.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\PreexistingEntityException.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\UserbooksJpaController.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Users.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\UserbooksPK.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\IllegalOrphanException.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Books.java
-F:\Brayan\Unicauca\SEMESTRE X\Aplicaciones Web\CRUD_Biblioteca_Java\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\AuthorsJpaController.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\control\servletAppBiblioteca.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Userbooks.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\UserbooksPK.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\IllegalOrphanException.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\NonexistentEntityException.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\UserbooksJpaController.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Authors.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Books.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\UsersJpaController.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\exceptions\PreexistingEntityException.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\Users.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\AuthorsJpaController.java
+C:\MisArchivos\SEM 10\CRUD_bibliotecaJava\src\main\java\edu\unicauca\apliweb\crud_biblioteca_java\persistence\jpa\BooksJpaController.java

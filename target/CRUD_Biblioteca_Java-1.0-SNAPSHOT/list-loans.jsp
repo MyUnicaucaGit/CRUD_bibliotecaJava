@@ -47,8 +47,10 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Email</th>
-                            <th>Titulo</th>                                                                    
+                            <th>Nombre</th>
+                            <th>Titulo</th>
+                            <th>Fecha de prestamo</th>
+                            <th>Fecha de vencimiento de prestamo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,6 +64,14 @@
                         <td>
 
                         <c:out value="${loan.books.title}" />
+                        </td>
+                        <td>
+
+                        <c:out value="${loan.userbooksPK.loanDate}" />
+                        </td>
+                        <td>
+
+                        <c:out value="${loan.exDate}" />
                         </td>
                                             
                        
